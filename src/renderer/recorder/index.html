@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'" />
+    <link rel="stylesheet" href="recorder.css" />
+    <title>Souffle — moteur audio (ne pas fermer)</title>
+  </head>
+  <body>
+    <main>
+      <div class="wave"><span></span><span></span><span></span><span></span><span></span></div>
+      <h1>Moteur audio</h1>
+      <p>
+        Cette fenêtre porte la capture micro de Souffle. Elle est normalement invisible et
+        n'apparaît qu'en mode diagnostic.
+      </p>
+      <p class="warn">Ne la fermez pas : la dictée s'arrêterait de fonctionner.</p>
+      <p class="small">Pour quitter, utilisez l'icône Souffle dans la barre de menus.</p>
+    </main>
+    <script src="recorder.js"></script>
+  </body>
+</html>

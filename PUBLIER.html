@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Souffle — obtenir le lien de téléchargement Windows</title>
+<style>
+  :root {
+    --bg:#0f1115; --card:#171a21; --line:rgba(255,255,255,.08);
+    --text:#eceef2; --dim:rgba(236,238,242,.58); --accent:#38bdf8; --warn:#fbbf24; --ok:#4ade80;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);line-height:1.65;padding:56px 24px 96px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif}
+  main{max-width:720px;margin:0 auto}
+  header{display:flex;align-items:center;gap:16px;margin-bottom:10px}
+  .mark{width:46px;height:46px;border-radius:14px;flex:0 0 46px;
+    background:conic-gradient(from 210deg,#38bdf8,#818cf8,#38bdf8);box-shadow:0 0 26px rgba(56,189,248,.35)}
+  h1{font-size:29px;letter-spacing:-.03em;font-weight:640}
+  .tagline{color:var(--dim);font-size:16px;margin-bottom:36px}
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:var(--accent);margin:44px 0 14px;font-weight:620}
+  h3{font-size:16px;margin:0 0 6px;font-weight:600}
+  p{margin-bottom:12px;color:rgba(236,238,242,.86)}
+  ul,ol{margin:0 0 12px 20px}
+  li{margin-bottom:8px;color:rgba(236,238,242,.86)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:14px}
+  code{background:#262b35;padding:1px 6px;border-radius:5px;font-size:13.5px}
+  pre{background:#0b0d11;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;margin-bottom:12px}
+  pre code{background:none;padding:0;font-size:13px;line-height:1.7}
+  a{color:var(--accent)}
+  b{color:#fff;font-weight:600}
+  .step{display:flex;gap:16px;margin-bottom:22px}
+  .step:last-child{margin-bottom:0}
+  .num{flex:0 0 30px;height:30px;border-radius:50%;display:grid;place-items:center;
+    background:rgba(56,189,248,.15);color:#bae6fd;font-weight:650;font-size:14px}
+  .step>div:last-child{flex:1}
+  .note{border-left:3px solid var(--accent);padding:12px 16px;background:rgba(56,189,248,.07);
+    border-radius:0 10px 10px 0;margin-bottom:14px}
+  .note.warn{border-left-color:var(--warn);background:rgba(251,191,36,.07)}
+  .note.ok{border-left-color:var(--ok);background:rgba(74,222,128,.07)}
+  .note p:last-child{margin-bottom:0}
+  footer{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);color:var(--dim);font-size:13px}
+</style>
+</head>
+<body>
+<main>
+
+  <header>
+    <div class="mark"></div>
+    <div>
+      <h1>Obtenir le lien Windows</h1>
+      <div class="tagline">Quinze minutes, une seule fois. Ensuite, un lien à transférer.</div>
+    </div>
+  </header>
+
+  <p>
+    Une application Windows pèse environ 100 Mo — trop pour être envoyée par message. La solution :
+    laisser GitHub la fabriquer et l'héberger. Vous déposez le code une fois, leur infrastructure
+    compile sur une vraie machine Windows, et vous obtenez une page de téléchargement publique dont
+    vous transmettez simplement l'adresse.
+  </p>
+  <p>
+    Tout se fait dans le navigateur. Aucune ligne de commande.
+  </p>
+
+  <h2>Étape par étape</h2>
+
+  <div class="card">
+    <div class="step">
+      <div class="num">1</div>
+      <div>
+        <h3>Créez un dépôt</h3>
+        <p>
+          Sur <a href="https://github.com/new">github.com/new</a> — créez un compte si nécessaire, c'est gratuit.
+          Nommez-le <code>souffle</code>. Laissez-le <b>Public</b> : c'est ce qui rendra le lien de
+          téléchargement accessible sans compte à la personne à qui vous l'enverrez.
+        </p>
+        <p>
+          Ne cochez rien d'autre — ni README, ni .gitignore, ni licence. Cliquez sur
+          <b>Create repository</b>.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div>
+        <h3>Déposez les fichiers</h3>
+        <p>
+          Sur la page qui s'affiche, cliquez sur <b>uploading an existing file</b>.
+        </p>
+        <p>
+          Décompressez le zip du projet sur votre bureau, ouvrez le dossier obtenu, sélectionnez
+          <b>tout son contenu</b> (Cmd+A), et faites-le glisser dans la zone de dépôt de la page.
+        </p>
+        <p>
+          Attendez que la liste se remplisse — une trentaine de fichiers — puis cliquez sur
+          <b>Commit changes</b> en bas.
+        </p>
+        <div class="note warn">
+          <p>
+            Glissez le <b>contenu</b> du dossier, pas le dossier lui-même. Et si vous voyez apparaître
+            <code>node_modules</code> ou <code>dist</code> dans la liste, retirez-les : ce sont des
+            fichiers temporaires, inutiles et très lourds.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div>
+        <h3>Laissez la machine travailler</h3>
+        <p>
+          Le dépôt contient déjà les instructions de compilation. Dès que vos fichiers sont déposés,
+          GitHub démarre une machine Windows et construit l'installateur tout seul.
+        </p>
+        <p>
+          Cliquez sur l'onglet <b>Actions</b> en haut du dépôt pour suivre. Un point orange signifie
+          « en cours », une coche verte « terminé ». Comptez cinq à huit minutes la première fois.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">4</div>
+      <div>
+        <h3>Récupérez le lien</h3>
+        <p>
+          Une fois la coche verte obtenue, allez dans <b>Releases</b>, dans la colonne de droite de la
+          page d'accueil du dépôt. Vous y trouverez <b>Souffle pour Windows — version 1</b> avec le
+          fichier <code>Souffle-Installateur-0.1.0.exe</code>.
+        </p>
+        <p>
+          Clic droit sur ce fichier → <b>Copier l'adresse du lien</b>. C'est ce lien que vous envoyez.
+          La personne le télécharge et double-clique : rien d'autre à faire de son côté.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note ok">
+    <p>
+      <b>Pour les versions suivantes</b> : modifiez un fichier depuis GitHub, ou redéposez-en une
+      version corrigée, et une nouvelle Release se crée automatiquement. Vous pouvez aussi relancer
+      la construction à la main depuis l'onglet Actions, bouton <b>Run workflow</b>.
+    </p>
+  </div>
+
+  <h2>Ce que verra la personne</h2>
+
+  <div class="card">
+    <p>
+      Elle télécharge un fichier <code>.exe</code>, le double-clique, et Windows affiche un
+      avertissement bleu : « Windows a protégé votre ordinateur ». C'est systématique pour toute
+      application non signée par un certificat commercial — un certificat coûte environ 300 € par an
+      et n'est utile que pour une diffusion large.
+    </p>
+    <p>
+      Elle clique sur <b>Informations complémentaires</b> puis <b>Exécuter quand même</b>.
+      L'installation se fait ensuite toute seule, Souffle démarre, et une icône apparaît près de
+      l'horloge. Le mode d'emploi complet est dans <code>LISEZ-MOI.html</code>.
+    </p>
+    <p>
+      Prévenez-la de cet avertissement à l'avance : c'est le seul moment où elle risque de renoncer.
+    </p>
+  </div>
+
+  <h2>Si vous préférez le terminal</h2>
+
+  <div class="card">
+    <p>Trois commandes depuis le dossier du projet, au lieu des étapes 1 et 2 :</p>
+    <pre><code>git init -b main
+git add .
+git commit -m "Souffle"
+gh repo create souffle --public --source=. --push</code></pre>
+    <p>
+      La dernière ligne utilise l'outil <code>gh</code> de GitHub. Sans lui, créez le dépôt sur le
+      site puis <code>git remote add origin …</code> et <code>git push -u origin main</code>.
+    </p>
+  </div>
+
+  <h2>Et pour macOS ?</h2>
+
+  <div class="card">
+    <p>
+      Sur votre propre Mac, une seule commande depuis le dossier du projet produit un
+      <code>.dmg</code> dans <code>dist/</code> :
+    </p>
+    <pre><code>npm run dist:mac</code></pre>
+    <p>
+      Même avertissement de sécurité au premier lancement : clic droit sur l'application →
+      <b>Ouvrir</b> plutôt qu'un double-clic, une seule fois.
+    </p>
+  </div>
+
+  <footer>
+    Souffle — application indépendante, code sous licence MIT.
+  </footer>
+
+</main>
+</body>
+</html>

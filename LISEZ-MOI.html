@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Souffle — mode d'emploi</title>
+<style>
+  :root {
+    --bg: #0f1115; --card: #171a21; --line: rgba(255,255,255,.08);
+    --text: #eceef2; --dim: rgba(236,238,242,.58); --accent: #38bdf8;
+    --ok: #4ade80; --warn: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text); line-height: 1.65;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    padding: 56px 24px 96px;
+  }
+  main { max-width: 720px; margin: 0 auto; }
+
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .mark {
+    width: 46px; height: 46px; border-radius: 14px; flex: 0 0 46px;
+    background: conic-gradient(from 210deg, #38bdf8, #818cf8, #38bdf8);
+    box-shadow: 0 0 26px rgba(56,189,248,.35);
+  }
+  h1 { font-size: 30px; letter-spacing: -.03em; font-weight: 640; }
+  .tagline { color: var(--dim); font-size: 16px; margin-bottom: 40px; }
+
+  h2 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: .09em;
+    color: var(--accent); margin: 44px 0 14px; font-weight: 620;
+  }
+  h3 { font-size: 16px; margin: 22px 0 6px; font-weight: 600; }
+  p { margin-bottom: 12px; color: rgba(236,238,242,.86); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px 24px; margin-bottom: 14px; }
+
+  ol, ul { margin: 0 0 12px 20px; }
+  li { margin-bottom: 9px; color: rgba(236,238,242,.86); }
+
+  kbd {
+    display: inline-block; padding: 2px 8px; border-radius: 6px;
+    background: #262b35; border: 1px solid var(--line);
+    border-bottom-width: 2px; font-size: 13px; font-family: inherit; font-weight: 600;
+    white-space: nowrap;
+  }
+  code { background: #262b35; padding: 1px 6px; border-radius: 5px; font-size: 13px; }
+  a { color: var(--accent); }
+
+  table { width: 100%; border-collapse: collapse; margin: 8px 0 14px; font-size: 14.5px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--dim); font-weight: 560; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+  td:first-child { white-space: nowrap; width: 34%; }
+
+  .note { border-left: 3px solid var(--accent); padding: 12px 16px; background: rgba(56,189,248,.07); border-radius: 0 10px 10px 0; margin-bottom: 14px; }
+  .warn { border-left-color: var(--warn); background: rgba(251,191,36,.07); }
+  .note p:last-child { margin-bottom: 0; }
+
+  .step { display: flex; gap: 16px; margin-bottom: 20px; }
+  .num {
+    flex: 0 0 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(56,189,248,.15); color: #bae6fd; font-weight: 650; font-size: 14px;
+  }
+  .step > div:last-child { flex: 1; }
+  .step h3 { margin-top: 3px; }
+
+  footer { margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--dim); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+
+  <header>
+    <div class="mark"></div>
+    <div>
+      <h1>Souffle</h1>
+      <div class="tagline">Parlez, le texte s'écrit là où vous tapez.</div>
+    </div>
+  </header>
+
+  <p>
+    Souffle est une application de dictée vocale. Vous appuyez sur un raccourci clavier, vous parlez
+    normalement, vous ré-appuyez — et votre texte apparaît dans l'application où vous étiez :
+    Outlook, Word, Teams, un navigateur, n'importe quel champ de saisie.
+  </p>
+  <p>
+    Ce n'est pas de la simple transcription. Les « euh », les hésitations et les phrases reprises en
+    cours de route sont retirés, la ponctuation et l'orthographe sont corrigées. Vous parlez comme
+    vous parlez ; ce qui s'écrit est propre.
+  </p>
+
+  <h2>Installation</h2>
+
+  <div class="card">
+    <div class="step">
+      <div class="num">1</div>
+      <div>
+        <h3>Décompressez le dossier</h3>
+        <p>
+          Clic droit sur <code>Souffle-Windows.zip</code> → <b>Extraire tout…</b> → <b>Extraire</b>.
+          Placez le dossier obtenu où vous voulez, par exemple dans vos Documents.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">2</div>
+      <div>
+        <h3>Double-cliquez sur <code>Souffle.exe</code></h3>
+        <p>
+          Windows affichera un avertissement bleu « Windows a protégé votre ordinateur ». C'est normal :
+          l'application n'est pas signée par un certificat commercial. Cliquez sur
+          <b>Informations complémentaires</b>, puis sur <b>Exécuter quand même</b>.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">3</div>
+      <div>
+        <h3>Collez une clé pour l'intelligence artificielle</h3>
+        <p>
+          La fenêtre de réglages s'ouvre toute seule au premier lancement. Il faut une clé pour que
+          Souffle puisse transcrire — voir la section suivante.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <p>
+      Souffle n'a pas de fenêtre principale. Une fois lancé, il vit dans la <b>zone de notification</b>,
+      en bas à droite près de l'horloge. Si vous ne voyez pas son icône, cliquez sur la petite flèche
+      qui déplie les icônes cachées, et faites-la glisser dans la barre pour l'avoir sous la main.
+    </p>
+  </div>
+
+  <h2>La clé d'API, en trois minutes</h2>
+
+  <div class="card">
+    <p>
+      Souffle envoie votre voix à un service qui la transcrit. Le plus rapide et le moins cher
+      s'appelle <b>Groq</b>, et il propose un usage gratuit largement suffisant.
+    </p>
+    <ol>
+      <li>Allez sur <a href="https://console.groq.com/keys">console.groq.com/keys</a> et créez un compte.</li>
+      <li>Cliquez sur <b>Create API Key</b>, donnez-lui un nom, copiez la clé (elle commence par <code>gsk_</code>).</li>
+      <li>Dans Souffle : onglet <b>Intelligence</b> → champ <b>Groq</b> → collez la clé.</li>
+      <li>Cliquez sur <b>Tester</b> à côté. Vous devez lire « Groq répond ».</li>
+    </ol>
+    <p>Puis réglez les deux modèles, juste au-dessus :</p>
+    <table>
+      <tr><th>Champ</th><th>Valeur à saisir</th></tr>
+      <tr><td>Transcription → Fournisseur</td><td>Groq</td></tr>
+      <tr><td>Transcription → Modèle</td><td><code>whisper-large-v3</code></td></tr>
+      <tr><td>Mise en forme → Fournisseur</td><td>Groq</td></tr>
+      <tr><td>Mise en forme → Modèle</td><td><code>llama-3.3-70b-versatile</code></td></tr>
+    </table>
+    <p>C'est tout. Fermez la fenêtre, Souffle est prêt.</p>
+  </div>
+
+  <h2>Utilisation quotidienne</h2>
+
+  <div class="card">
+    <p>Cliquez dans le champ où vous voulez écrire, puis :</p>
+    <table>
+      <tr><th>Geste</th><th>Effet</th></tr>
+      <tr><td><kbd>Ctrl</kbd> + <kbd>Maj</kbd> + <kbd>Espace</kbd></td><td>Démarre la dictée</td></tr>
+      <tr><td>Le même raccourci à nouveau</td><td>Termine et écrit le texte</td></tr>
+      <tr><td><kbd>Échap</kbd></td><td>Termine et écrit le texte</td></tr>
+      <tr><td>Clic sur la pastille noire</td><td>Termine et écrit le texte</td></tr>
+      <tr><td>Clic droit sur la pastille</td><td>Annule, rien n'est écrit</td></tr>
+    </table>
+    <p>
+      Pendant que vous parlez, une pastille noire apparaît en bas de l'écran avec un petit
+      histogramme qui bouge au son de votre voix. Si l'histogramme ne bouge pas, le micro n'entend
+      rien : vérifiez lequel est sélectionné dans les paramètres de Windows.
+    </p>
+    <p>Comptez une à deux secondes entre la fin de votre phrase et l'apparition du texte.</p>
+  </div>
+
+  <h2>Deux réglages qui changent tout</h2>
+
+  <div class="card">
+    <h3>La langue</h3>
+    <p>
+      Onglet <b>Intelligence</b> → section <b>Langue écrite</b>. Deux choix, et ils sont très différents :
+    </p>
+    <ul>
+      <li><b>La langue que je parle</b> — vous parlez anglais, le texte sort en anglais. C'est de la
+      transcription fidèle, corrigée et ponctuée. Aucune traduction.</li>
+      <li><b>Traduire vers…</b> — vous parlez dans n'importe quelle langue, le texte sort dans celle
+      que vous avez choisie.</li>
+    </ul>
+    <div class="note warn">
+      <p>
+        Le moteur de transcription ne reconnaît <b>qu'une seule langue par dictée</b>. Si vous mélangez
+        français et allemand dans la même phrase, le résultat sera mauvais. Terminez la dictée,
+        relancez-la, et parlez l'autre langue. Pour un meilleur résultat encore, indiquez la langue
+        à l'avance : icône Souffle dans la zone de notification → <b>Langue parlée</b>.
+      </p>
+    </div>
+
+    <h3>Le mode direct</h3>
+    <p>
+      Onglet <b>Général</b> → <b>Mode direct</b>. Le texte s'écrit phrase par phrase pendant que vous
+      parlez, au lieu d'arriver d'un bloc à la fin. Souffle repère vos silences et envoie chaque
+      phrase dès qu'elle est terminée. Agréable pour les textes longs.
+    </p>
+  </div>
+
+  <h2>Pour aller plus loin</h2>
+
+  <div class="card">
+    <p>
+      <b>Le vocabulaire.</b> Onglet <b>Vocabulaire</b> : ajoutez-y les noms propres, les marques et le
+      jargon de votre métier, un par ligne. Sans ça, un nom d'entreprise inhabituel sera écrit
+      phonétiquement. C'est le réglage qui améliore le plus les résultats au quotidien.
+    </p>
+    <p>
+      <b>Les raccourcis de texte.</b> Toujours dans <b>Vocabulaire</b> : dites « mon adresse mail »,
+      Souffle écrit l'adresse complète.
+    </p>
+    <p>
+      <b>Le ton.</b> Onglet <b>Intelligence</b> : neutre, formel, détendu, ou brut (ponctuation
+      seulement, aucune réécriture). Vous pouvez aussi fixer un ton différent par application —
+      formel dans Outlook, détendu dans Teams.
+    </p>
+    <p>
+      <b>L'historique.</b> Toutes vos dictées sont conservées sur votre machine, avec un bouton
+      Copier. Si un texte part dans la mauvaise fenêtre, il n'est jamais perdu.
+    </p>
+  </div>
+
+  <h2>Si quelque chose ne va pas</h2>
+
+  <div class="card">
+    <table>
+      <tr><th>Symptôme</th><th>Que faire</th></tr>
+      <tr>
+        <td>Le raccourci ne fait rien</td>
+        <td>Un autre logiciel l'utilise déjà. Réglages → Général → cliquez le champ
+        <b>Raccourci global</b> et tapez une autre combinaison, par exemple
+        <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>D</kbd>.</td>
+      </tr>
+      <tr>
+        <td>« Micro refusé »</td>
+        <td>Paramètres Windows → Confidentialité et sécurité → Microphone → autorisez les
+        applications de bureau.</td>
+      </tr>
+      <tr>
+        <td>L'histogramme ne bouge pas</td>
+        <td>Le mauvais micro est sélectionné dans Windows, ou il est coupé.</td>
+      </tr>
+      <tr>
+        <td>Le texte va dans la mauvaise fenêtre</td>
+        <td>Ne changez pas de fenêtre pendant la dictée. Souffle essaie de revenir à la bonne, mais
+        le plus sûr est de rester là où vous écrivez.</td>
+      </tr>
+      <tr>
+        <td>Rien ne s'écrit, mais le texte existe</td>
+        <td>Il est dans le presse-papier : faites <kbd>Ctrl</kbd>+<kbd>V</kbd>. L'historique le contient aussi.</td>
+      </tr>
+      <tr>
+        <td>« Clé API refusée »</td>
+        <td>La clé a été mal collée ou révoquée. Recréez-en une sur console.groq.com.</td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>Confidentialité</h2>
+
+  <div class="card">
+    <p>
+      L'audio de chaque dictée est envoyé au fournisseur que vous avez choisi, le temps de la
+      transcription, puis effacé de la mémoire. Rien n'est envoyé ailleurs, et il n'y a aucune
+      télémétrie.
+    </p>
+    <p>
+      Votre clé d'API est chiffrée par Windows lui-même et n'est jamais écrite en clair.
+      L'historique reste sur votre disque ; le <b>mode confidentialité</b>, dans l'onglet du même nom,
+      désactive complètement son enregistrement.
+    </p>
+    <p>
+      Si votre organisation interdit l'envoi de données vers un service externe, Souffle accepte un
+      point d'accès local (LM Studio, Ollama, whisper.cpp) dans le champ <b>Endpoint personnalisé</b> :
+      plus rien ne quitte alors la machine.
+    </p>
+  </div>
+
+  <footer>
+    Souffle — application indépendante, code sous licence MIT.<br />
+    Fonctionne sur Windows 10 et 11 (64 bits), et sur macOS.
+  </footer>
+
+</main>
+</body>
+</html>

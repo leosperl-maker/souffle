@@ -1,0 +1,80 @@
+{
+  "name": "souffle",
+  "productName": "Souffle",
+  "version": "0.1.0",
+  "description": "Dictée vocale IA système : parlez, le texte propre s'écrit là où vous tapez.",
+  "author": "Alpha Agency",
+  "license": "MIT",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "diag": "electron . --diag",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:linux": "electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "^43.0.0",
+    "electron-builder": "^26.0.0"
+  },
+  "optionalDependencies": {
+    "uiohook-napi": "^1.5.4"
+  },
+  "build": {
+    "appId": "fr.alphagency.souffle",
+    "productName": "Souffle",
+    "files": [
+      "src/**/*",
+      "build/icon.*",
+      "LISEZ-MOI.html",
+      "!**/*.map"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "NSMicrophoneUsageDescription": "Souffle utilise le micro pour transcrire votre voix en texte.",
+        "NSAppleEventsUsageDescription": "Souffle envoie un raccourci de collage à l'application active pour y insérer votre texte.",
+        "LSUIElement": true
+      }
+    },
+    "npmRebuild": false,
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.png",
+      "artifactName": "Souffle-Installateur-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "shortcutName": "Souffle",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility"
+    },
+    "extraResources": [
+      "LISEZ-MOI.html"
+    ]
+  }
+}

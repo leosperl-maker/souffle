@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'" />
+    <link rel="stylesheet" href="overlay.css" />
+    <title>Souffle</title>
+  </head>
+  <body>
+    <div class="pill" id="pill" data-state="recording">
+      <div class="glyph" id="glyph">
+        <div class="bars" id="bars">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <svg class="spinner" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+        </svg>
+        <svg class="check" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 12.5 9.5 18 20 6.5" />
+        </svg>
+        <svg class="cross" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </div>
+      <div class="text">
+        <div class="label" id="label">Écoute…</div>
+        <div class="hint" id="hint">Cliquez pour terminer</div>
+      </div>
+      <div class="timer" id="timer">0:00</div>
+    </div>
+    <script src="overlay.js"></script>
+  </body>
+</html>

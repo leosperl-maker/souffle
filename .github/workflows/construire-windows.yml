@@ -1,0 +1,66 @@
+name: Construire Souffle pour Windows
+
+# Se déclenche à chaque envoi de code sur la branche principale,
+# et manuellement depuis l'onglet Actions (bouton « Run workflow »).
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+# Nécessaire pour publier l'installateur dans les Releases du dépôt.
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Installateur Windows (x64)
+    runs-on: windows-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Installer les dépendances
+        run: npm install --no-audit --no-fund
+
+      - name: Construire l'installateur
+        run: npx electron-builder --win nsis --x64 --publish never
+
+      - name: Vérifier le résultat
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem dist\*.exe | Select-Object -First 1
+          if (-not $exe) { throw "Aucun installateur produit." }
+          $mo = [math]::Round($exe.Length / 1MB, 1)
+          Write-Host "Installateur : $($exe.Name) — $mo Mo"
+          if ($exe.Length -lt 40MB) { throw "Installateur suspect (trop petit) : $mo Mo" }
+
+      # Une Release est téléchargeable par n'importe qui avec le lien,
+      # contrairement aux artefacts d'Actions qui exigent un compte GitHub.
+      - name: Publier l'installateur
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: windows-${{ github.run_number }}
+          name: Souffle pour Windows — version ${{ github.run_number }}
+          body: |
+            ## Installation
+
+            1. Téléchargez **Souffle-Installateur-0.1.0.exe** ci-dessous.
+            2. Double-cliquez dessus. Windows affichera un avertissement bleu
+               (« Windows a protégé votre ordinateur ») car l'application n'est pas
+               signée par un certificat commercial : cliquez sur **Informations
+               complémentaires**, puis **Exécuter quand même**.
+            3. L'installation se fait toute seule et Souffle démarre.
+
+            Souffle vit dans la zone de notification, près de l'horloge.
+            Le mode d'emploi complet se trouve dans le fichier `LISEZ-MOI.html` du dépôt.
+
+            **Raccourci par défaut : Ctrl + Maj + Espace.**
+          files: dist/Souffle-Installateur-*.exe
+          draft: false
+          prerelease: false

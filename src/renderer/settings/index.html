@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'" />
+    <link rel="stylesheet" href="settings.css" />
+    <title>Souffle — Réglages</title>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="mark"></div>
+        <div>
+          <div class="name">Souffle</div>
+          <div class="ver" id="version">—</div>
+        </div>
+      </div>
+      <nav>
+        <button class="nav-item active" data-tab="general">Général</button>
+        <button class="nav-item" data-tab="ai">Intelligence</button>
+        <button class="nav-item" data-tab="vocab">Vocabulaire</button>
+        <button class="nav-item" data-tab="history">Historique</button>
+        <button class="nav-item" data-tab="privacy">Confidentialité</button>
+      </nav>
+      <div class="spacer"></div>
+      <button class="try" id="try">Tester la dictée</button>
+    </aside>
+
+    <main>
+      <!-- ------------------------------ Général ------------------------------ -->
+      <section class="tab active" id="tab-general">
+        <h1>Général</h1>
+        <p class="sub">Comment déclencher la dictée et où le texte atterrit.</p>
+
+        <div class="card">
+          <div class="row">
+            <div class="row-text">
+              <label>Raccourci global</label>
+              <span>Cliquez puis tapez la combinaison souhaitée.</span>
+            </div>
+            <input class="shortcut" id="shortcut" readonly value="…" />
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Déclenchement</label>
+              <span id="mode-note"></span>
+            </div>
+            <select id="mode">
+              <option value="toggle">Bascule (appuyer / ré-appuyer)</option>
+              <option value="hold">Maintenir pour parler</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Touche Échap pendant la dictée</label>
+              <span id="escape-note"></span>
+            </div>
+            <select id="escapeAction">
+              <option value="stop">Terminer et écrire</option>
+              <option value="cancel">Annuler la dictée</option>
+              <option value="off">Ne rien faire</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Mode direct</label>
+              <span>Le texte s'écrit phrase par phrase pendant que vous parlez, au lieu d'attendre la fin.</span>
+            </div>
+            <input type="checkbox" id="liveMode" class="switch" />
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Coller automatiquement</label>
+              <span>Sinon, le texte reste dans le presse-papier.</span>
+            </div>
+            <input type="checkbox" id="autoPaste" class="switch" />
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Revenir à l'application de départ</label>
+              <span>Le texte va là où vous avez commencé à parler, même si vous avez changé de fenêtre.</span>
+            </div>
+            <input type="checkbox" id="refocusTarget" class="switch" />
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Sons de retour</label>
+              <span>Un bip au début, un à l'insertion.</span>
+            </div>
+            <input type="checkbox" id="playSounds" class="switch" />
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Lancer au démarrage</label>
+              <span>Souffle vit dans la barre de menus.</span>
+            </div>
+            <input type="checkbox" id="launchAtLogin" class="switch" />
+          </div>
+        </div>
+
+        <h2>Autorisations système</h2>
+        <div class="card">
+          <div class="row">
+            <div class="row-text">
+              <label>Microphone</label>
+              <span>Indispensable pour capter la voix.</span>
+            </div>
+            <button class="ghost" id="askMic">Autoriser</button>
+          </div>
+          <div class="row" id="row-accessibility">
+            <div class="row-text">
+              <label>Accessibilité <span class="badge" id="a11y-badge">—</span></label>
+              <span>Permet à Souffle d'envoyer ⌘V à l'application active.</span>
+            </div>
+            <button class="ghost" id="askA11y">Ouvrir les réglages</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------------------- Intelligence --------------------------- -->
+      <section class="tab" id="tab-ai">
+        <h1>Intelligence</h1>
+        <p class="sub">Un modèle transcrit, un second réécrit proprement.</p>
+
+        <h2>Transcription</h2>
+        <div class="card">
+          <div class="row">
+            <div class="row-text"><label>Fournisseur</label><span>Tous compatibles API OpenAI.</span></div>
+            <select id="sttProvider">
+              <option value="openai">OpenAI</option>
+              <option value="groq">Groq (le plus rapide)</option>
+              <option value="custom">Endpoint personnalisé</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Modèle</label>
+              <span id="stt-hint">
+                Pour l'allemand ou l'anglais, préférez <b>whisper-large-v3</b> : la version
+                « turbo » est distillée et perd en précision hors du français et de l'anglais.
+              </span>
+            </div>
+            <input id="sttModel" />
+          </div>
+          <div class="row hidden" id="row-sttUrl">
+            <div class="row-text"><label>URL de base</label><span>Ex. http://localhost:1234/v1</span></div>
+            <input id="customSttUrl" placeholder="http://localhost:8080/v1" />
+          </div>
+          <div class="row">
+            <div class="row-text">
+              <label>Langue parlée</label>
+              <span>
+                Whisper ne détecte qu'une seule langue par dictée : forcer la bonne améliore
+                nettement le résultat. Le menu de la barre de menus permet d'en changer en un clic.
+              </span>
+            </div>
+            <select id="language">
+              <option value="auto">Détection automatique</option>
+              <option value="fr">Français</option>
+              <option value="en">Anglais</option>
+              <option value="es">Espagnol</option>
+              <option value="de">Allemand</option>
+              <option value="it">Italien</option>
+              <option value="pt">Portugais</option>
+            </select>
+          </div>
+        </div>
+
+        <h2>Langue écrite</h2>
+        <div class="card">
+          <div class="row">
+            <div class="row-text">
+              <label>Que doit écrire Souffle ?</label>
+              <span id="output-note"></span>
+            </div>
+            <select id="outputMode">
+              <option value="same">La langue que je parle</option>
+              <option value="translate">Traduire vers…</option>
+            </select>
+          </div>
+          <div class="row hidden" id="row-target">
+            <div class="row-text">
+              <label>Traduire vers</label>
+              <span>Quelle que soit la langue parlée, le texte sortira dans celle-ci.</span>
+            </div>
+            <select id="targetLanguage">
+              <option value="fr">Français</option>
+              <option value="en">Anglais</option>
+              <option value="es">Espagnol</option>
+              <option value="de">Allemand</option>
+              <option value="it">Italien</option>
+              <option value="pt">Portugais</option>
+              <option value="nl">Néerlandais</option>
+              <option value="ar">Arabe</option>
+              <option value="zh">Chinois</option>
+              <option value="ja">Japonais</option>
+            </select>
+          </div>
+        </div>
+
+        <h2>Mise en forme</h2>
+        <div class="card">
+          <div class="row">
+            <div class="row-text">
+              <label>Nettoyer le texte</label>
+              <span>Retire les « euh », ponctue, garde la dernière reformulation.</span>
+            </div>
+            <input type="checkbox" id="formatEnabled" class="switch" />
+          </div>
+          <div class="row">
+            <div class="row-text"><label>Fournisseur</label><span></span></div>
+            <select id="llmProvider">
+              <option value="openai">OpenAI</option>
+              <option value="groq">Groq</option>
+              <option value="custom">Endpoint personnalisé</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="row-text"><label>Modèle</label><span>gpt-4o-mini, llama-3.3-70b-versatile…</span></div>
+            <input id="llmModel" />
+          </div>
+          <div class="row hidden" id="row-llmUrl">
+            <div class="row-text"><label>URL de base</label><span></span></div>
+            <input id="customLlmUrl" placeholder="http://localhost:1234/v1" />
+          </div>
+          <div class="row">
+            <div class="row-text"><label>Ton par défaut</label><span>Surchargé par app dans l'onglet Vocabulaire.</span></div>
+            <select id="tone">
+              <option value="brut">Brut (ponctuation seule)</option>
+              <option value="neutre">Neutre</option>
+              <option value="formel">Formel</option>
+              <option value="casual">Détendu</option>
+            </select>
+          </div>
+          <div class="col">
+            <label>Consignes personnelles</label>
+            <textarea id="customInstructions" rows="3" placeholder="Ex. « N'utilise jamais de tirets cadratins. Signe mes mails par Léo. »"></textarea>
+          </div>
+        </div>
+
+        <h2>Clés API</h2>
+        <div class="card">
+          <div class="row">
+            <div class="row-text"><label>OpenAI <span class="badge" id="badge-openaiKey">absente</span></label><span>platform.openai.com</span></div>
+            <div class="inline">
+              <input type="password" id="openaiKey" placeholder="sk-…" />
+              <button class="ghost" data-test="openai">Tester</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-text"><label>Groq <span class="badge" id="badge-groqKey">absente</span></label><span>console.groq.com</span></div>
+            <div class="inline">
+              <input type="password" id="groqKey" placeholder="gsk_…" />
+              <button class="ghost" data-test="groq">Tester</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-text"><label>Endpoint perso <span class="badge" id="badge-customKey">absente</span></label><span>Laissez vide si non requise.</span></div>
+            <div class="inline">
+              <input type="password" id="customKey" placeholder="optionnel" />
+              <button class="ghost" data-test="custom">Tester</button>
+            </div>
+          </div>
+          <div class="note" id="test-result"></div>
+        </div>
+      </section>
+
+      <!-- ------------------------------ Vocabulaire -------------------------- -->
+      <section class="tab" id="tab-vocab">
+        <h1>Vocabulaire</h1>
+        <p class="sub">Ce que Souffle doit écrire correctement du premier coup.</p>
+
+        <div class="card">
+          <div class="col">
+            <label>Dictionnaire</label>
+            <span class="help">Un terme par ligne : noms propres, marques, jargon métier.</span>
+            <textarea id="dictionary" rows="6" placeholder="Alpha Agency&#10;KACHÉ&#10;Photon Fusion&#10;Léo Sperl"></textarea>
+          </div>
+        </div>
+
+        <h2>Raccourcis de texte</h2>
+        <div class="card">
+          <span class="help">Dites le déclencheur à l'oral, Souffle insère la valeur.</span>
+          <div id="snippets" class="pairs"></div>
+          <button class="ghost add" id="addSnippet">+ Ajouter un raccourci</button>
+        </div>
+
+        <h2>Ton par application</h2>
+        <div class="card">
+          <span class="help">Le nom doit correspondre à l'app active (ex. Slack, Mail, Notion, Terminal).</span>
+          <div id="appTones" class="pairs"></div>
+          <button class="ghost add" id="addAppTone">+ Ajouter une application</button>
+        </div>
+      </section>
+
+      <!-- ------------------------------ Historique --------------------------- -->
+      <section class="tab" id="tab-history">
+        <h1>Historique</h1>
+        <p class="sub">Stocké uniquement sur cette machine.</p>
+        <div class="card" id="historyList"></div>
+        <button class="danger" id="clearHistory">Vider l'historique</button>
+      </section>
+
+      <!-- --------------------------- Confidentialité ------------------------- -->
+      <section class="tab" id="tab-privacy">
+        <h1>Confidentialité</h1>
+        <p class="sub">Ce qui sort de la machine, et ce qui y reste.</p>
+
+        <div class="card">
+          <div class="row">
+            <div class="row-text">
+              <label>Mode confidentialité</label>
+              <span>Aucune dictée n'est conservée sur le disque.</span>
+            </div>
+            <input type="checkbox" id="privacyMode" class="switch" />
+          </div>
+          <div class="row">
+            <div class="row-text"><label>Taille de l'historique</label><span>Nombre de dictées gardées.</span></div>
+            <input type="number" id="historyLimit" min="0" max="1000" />
+          </div>
+        </div>
+
+        <h2>Statistiques</h2>
+        <div class="card stats" id="stats"></div>
+
+        <div class="note">
+          L'audio est envoyé au fournisseur choisi, puis supprimé de la mémoire. Les clés API sont
+          chiffrées par le trousseau du système. Pour un traitement 100 % local, pointez les deux
+          fournisseurs sur un endpoint personnalisé (whisper.cpp, LM Studio, Ollama).
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast"></div>
+    <script src="settings.js"></script>
+  </body>
+</html>
